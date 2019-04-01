@@ -4,12 +4,12 @@ using DevExpress.Xpo.Metadata;
 using System;
 using System.Configuration;
 
-namespace AspNetMvcApplication {
+namespace AspNetMvcApplication.DataAccess {
     public static class ConnectionHelper {
 
         static readonly Type[] PersistentTypes = new Type[]{
-            typeof(PersistentTypes.Order),
-            typeof(PersistentTypes.Customer)
+            typeof(Order),
+            typeof(Customer)
         };
 
         public static void Connect() {

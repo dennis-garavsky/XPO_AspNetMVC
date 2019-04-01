@@ -3,6 +3,8 @@ using System.Web;
 using System.Linq;
 using System.Web.Mvc;
 using DevExpress.Xpo;
+using AspNetMvcApplication.DataAccess;
+using AspNetMvcApplication.Models;
 
 namespace AspNetMvcApplication.Controllers {
 
@@ -10,12 +12,12 @@ namespace AspNetMvcApplication.Controllers {
 
         [ValidateInput(false)]
         public ActionResult OrderListPartial(int customerOid) {
-            var model = UnitOfWork.Query<PersistentTypes.Customer>()
-                .Select(t => new Models.Customer() {
+            var model = UnitOfWork.Query<Customer>()
+                .Select(t => new CustomerViewModel() {
                     Oid = t.Oid,
                     FirstName = t.FirstName,
                     LastName = t.LastName,
-                    Orders = t.Orders.Select(o => new Models.Order() {
+                    Orders = t.Orders.Select(o => new OrderViewModel() {
                         Oid = o.Oid,
                         OrderDate = o.OrderDate,
                         ProductName = o.ProductName,
@@ -23,8 +25,8 @@ namespace AspNetMvcApplication.Controllers {
                         CustomerId = o.Customer.Oid
                     }).ToList()
                 }).FirstOrDefault(t => t.Oid == customerOid);
-            ViewData["CustomersList"] = UnitOfWork.Query<PersistentTypes.Customer>()
-                .Select(t => new Models.Customer() {
+            ViewData["CustomersList"] = UnitOfWork.Query<Customer>()
+                .Select(t => new CustomerViewModel() {
                     Oid = t.Oid,
                     FirstName = t.FirstName,
                     LastName = t.LastName
@@ -34,14 +36,14 @@ namespace AspNetMvcApplication.Controllers {
 
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult AddOrder(int customerOid, Models.Order model) {
+        public ActionResult AddOrder(int customerOid, OrderViewModel model) {
             if(ModelState.IsValid) {
                 SafeExecute(() => {
-                    var order = new PersistentTypes.Order(UnitOfWork) {
+                    var order = new Order(UnitOfWork) {
                         OrderDate = model.OrderDate,
                         ProductName = model.ProductName,
                         Freight = model.Freight,
-                        Customer = UnitOfWork.GetObjectByKey<PersistentTypes.Customer>(model.CustomerId)
+                        Customer = UnitOfWork.GetObjectByKey<Customer>(model.CustomerId)
                     };
                     UnitOfWork.CommitChanges();
                 });
@@ -52,14 +54,14 @@ namespace AspNetMvcApplication.Controllers {
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult UpdateOrder(int customerOid, Models.Order model) {
+        public ActionResult UpdateOrder(int customerOid, OrderViewModel model) {
             if(ModelState.IsValid) {
                 SafeExecute(() => {
-                    var order = UnitOfWork.GetObjectByKey<PersistentTypes.Order>(model.Oid);
+                    var order = UnitOfWork.GetObjectByKey<Order>(model.Oid);
                     order.OrderDate = model.OrderDate;
                     order.ProductName = model.ProductName;
                     order.Freight = model.Freight;
-                    order.Customer = UnitOfWork.GetObjectByKey<PersistentTypes.Customer>(model.CustomerId);
+                    order.Customer = UnitOfWork.GetObjectByKey<Customer>(model.CustomerId);
                     UnitOfWork.CommitChanges();
                 });
             } else {
@@ -71,7 +73,7 @@ namespace AspNetMvcApplication.Controllers {
         [HttpPost, ValidateInput(false)]
         public ActionResult DeleteOrder(int customerOid, int Oid) {
             SafeExecute(() => {
-                var order = UnitOfWork.GetObjectByKey<PersistentTypes.Order>(Oid);
+                var order = UnitOfWork.GetObjectByKey<Order>(Oid);
                 order.Delete();
                 UnitOfWork.CommitChanges();
             });

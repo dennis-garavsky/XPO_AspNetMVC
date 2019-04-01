@@ -1,8 +1,9 @@
 @using DevExpress.Web.Data
-@model AspNetMvcApplication.Models.Customer
+@using AspNetMvcApplication.Models
+@model CustomerViewModel
 
 @(
-    Html.DevExpress().GridView<AspNetMvcApplication.Models.Order>(settings => {
+    Html.DevExpress().GridView<OrderViewModel>(settings => {
         settings.Name = "GridOrders";
         settings.CallbackRouteValues = new { Controller = "Order", Action = "OrderListPartial" };
         settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Order", Action = "AddOrder" };

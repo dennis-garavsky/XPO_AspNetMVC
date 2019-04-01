@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AspNetMvcApplication.DataAccess;
+using AspNetMvcApplication.Models;
 using DevExpress.Xpo;
 
 namespace AspNetMvcApplication.Controllers {
@@ -11,8 +13,8 @@ namespace AspNetMvcApplication.Controllers {
 
         [ValidateInput(false)]
         public ActionResult CustomerListPartial() {
-            var model = UnitOfWork.Query<PersistentTypes.Customer>()
-                .Select(t => new Models.Customer() {
+            var model = UnitOfWork.Query<Customer>()
+                .Select(t => new CustomerViewModel() {
                     Oid = t.Oid,
                     FirstName = t.FirstName,
                     LastName = t.LastName
@@ -21,10 +23,10 @@ namespace AspNetMvcApplication.Controllers {
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult AddCustomer(Models.Customer model) {
+        public ActionResult AddCustomer(CustomerViewModel model) {
             if(ModelState.IsValid) {
                 SafeExecute(() => {
-                    var customer = new PersistentTypes.Customer(UnitOfWork) {
+                    var customer = new Customer(UnitOfWork) {
                         FirstName = model.FirstName,
                         LastName = model.LastName
                     };
@@ -37,10 +39,10 @@ namespace AspNetMvcApplication.Controllers {
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult UpdateCustomer(Models.Customer model) {
+        public ActionResult UpdateCustomer(CustomerViewModel model) {
             if(ModelState.IsValid) {
                 SafeExecute(() => {
-                    var customer = UnitOfWork.GetObjectByKey<PersistentTypes.Customer>(model.Oid);
+                    var customer = UnitOfWork.GetObjectByKey<Customer>(model.Oid);
                     customer.FirstName = model.FirstName;
                     customer.LastName = model.LastName;
                     UnitOfWork.CommitChanges();
@@ -54,7 +56,7 @@ namespace AspNetMvcApplication.Controllers {
         [HttpPost, ValidateInput(false)]
         public ActionResult DeleteCustomer(int Oid) {
             SafeExecute(() => {
-                var customer = UnitOfWork.GetObjectByKey<PersistentTypes.Customer>(Oid);
+                var customer = UnitOfWork.GetObjectByKey<Customer>(Oid);
                 customer.Delete();
                 UnitOfWork.CommitChanges();
             });

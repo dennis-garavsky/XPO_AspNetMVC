@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace AspNetMvcApplication.Models {
-    public class Order {
+    public class OrderViewModel {
         public int Oid { get; set; }
         public string ProductName { get; set; }
         public DateTime OrderDate { get; set; }

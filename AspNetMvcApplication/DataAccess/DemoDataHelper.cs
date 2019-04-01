@@ -1,10 +1,9 @@
 ﻿using DevExpress.Xpo;
-using AspNetMvcApplication.PersistentTypes;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace AspNetMvcApplication {
+namespace AspNetMvcApplication.DataAccess {
     public static class DemoDataHelper {
         private static string[] firstNames = new string[] {
             "Peter", "Ryan", "Richard", "Tom", "Mark", "Steve",

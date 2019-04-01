@@ -1,6 +1,7 @@
-﻿using DevExpress.Xpo;
+﻿using System;
+using DevExpress.Xpo;
 
-namespace AspNetMvcApplication.PersistentTypes {
+namespace AspNetMvcApplication.DataAccess {
 
     public class Customer : XPObject {
         public Customer(Session session) : base(session) { }
@@ -14,7 +15,7 @@ namespace AspNetMvcApplication.PersistentTypes {
         }
         [PersistentAlias("Concat([FirstName], ' ', [LastName])")]
         public string ContactName {
-            get { return string.Concat(FirstName, " ", LastName); }
+            get { return Convert.ToString(EvaluateAlias(nameof(ContactName))); }
         }
         [Association("CustomerOrders")]
         public XPCollection<Order> Orders {

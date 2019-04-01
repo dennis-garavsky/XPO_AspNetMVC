@@ -1,5 +1,5 @@
+using AspNetMvcApplication.DataAccess;
 using DevExpress.Web.Mvc;
-using DevExpress.Xpo;
 using System;
 using System.Collections.Generic;
 using System.Linq;

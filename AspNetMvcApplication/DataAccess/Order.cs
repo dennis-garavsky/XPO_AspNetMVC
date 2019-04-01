@@ -1,7 +1,7 @@
 ﻿using DevExpress.Xpo;
 using System;
 
-namespace AspNetMvcApplication.PersistentTypes {
+namespace AspNetMvcApplication.DataAccess {
     public class Order : XPObject {
         public Order(Session session) : base(session) { }
         public override void AfterConstruction() { base.AfterConstruction(); }

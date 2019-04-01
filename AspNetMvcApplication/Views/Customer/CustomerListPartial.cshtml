@@ -1,8 +1,9 @@
 @using DevExpress.Web.Data
-@model IEnumerable<AspNetMvcApplication.Models.Customer>
+@using AspNetMvcApplication.Models
+@model IEnumerable<CustomerViewModel>
 
 @(
-    Html.DevExpress().GridView<AspNetMvcApplication.Models.Customer>(settings => {
+    Html.DevExpress().GridView<CustomerViewModel>(settings => {
         settings.Name = "GridCustomers";
         settings.CallbackRouteValues = new { Controller = "Customer", Action = "CustomerListPartial" };
         settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Customer", Action = "AddCustomer" };
